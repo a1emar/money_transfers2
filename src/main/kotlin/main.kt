@@ -6,27 +6,31 @@ fun main() {
     val transferFees = when (typeCard) {
         1 -> masterMaestro(transferCash, totalMonthTransfer)
         2 -> visaMir(transferCash, totalMonthTransfer)
-        3 -> vkPay(transferCash, totalMonthTransfer)
+        3 -> 0
         else -> println("Transfer ERROR")
     }
-    if inLimit() {
-        println("Обьем перевода: $transferCash коп")
-        println("Комиссия: $transferFees коп")
-    } else println("Превышен лимит перевода")
+    if (inLimit(typeCard, totalMonthTransfer, transferCash))
+    println("Обьем перевода: $transferCash коп. Комиссия: $transferFees коп.")
+    else println("Превышен лимит перевода")
 }
 
-fun masterMaestro(transferCash: Int, totalMonthTransfer: Int) {
-
+fun masterMaestro(transferCash: Int, totalMonthTransfer: Int): Int {
+    val res: Int = if (transferCash + totalMonthTransfer < 7500001) 0
+        else (transferCash * 0.006 + 2000).toInt()
+    return res
 }
 
-fun visaMir(transferCash: Int, totalMonthTransfer: Int) {
-
+fun visaMir(transferCash: Int, totalMonthTransfer: Int): Int {
+    val res: Int = if (transferCash * 0.0075 < 3500) 3500
+        else (transferCash * 0.0075).toInt()
+    return res
 }
 
-fun vkPay(transferCash: Int, totalMonthTransfer: Int) {
-
-}
-
-fun inLimit(function: () -> Unit) {
-
+fun inLimit(typeCard: Int, totalMonthTransfer: Int, transferCash: Int): Boolean {
+    val res: Boolean = when (typeCard) {
+        1, 2 -> if ((transferCash < 15000001)&&((transferCash + totalMonthTransfer) < 60000001)) true else false
+        3 -> if ((transferCash < 1500001)&&((transferCash + totalMonthTransfer) < 4000001)) true else false
+        else -> false
+    }
+    return res
 }
