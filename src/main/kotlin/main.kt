@@ -3,15 +3,19 @@ fun main() {
     val totalMonthTransfer = 0 // коп
     val transferCash = 12000 // коп
 
-    val transferFees = when (typeCard) {
-        1 -> masterMaestro(transferCash, totalMonthTransfer)
-        2 -> visaMir(transferCash, totalMonthTransfer)
-        3 -> 0
-        else -> println("Transfer ERROR")
-    }
+    val transferFees = fees(typeCard, totalMonthTransfer, transferCash)
     if (inLimit(typeCard, totalMonthTransfer, transferCash))
     println("Обьем перевода: $transferCash коп. Комиссия: $transferFees коп.")
     else println("Превышен лимит перевода")
+}
+
+fun fees(typeCard: Int, totalMonthTransfer: Int, transferCash: Int): Int {
+    val transferFees: Int = when (typeCard) {
+        1 -> masterMaestro(transferCash, totalMonthTransfer)
+        2 -> visaMir(transferCash)
+        else -> 0
+    }
+    return transferFees
 }
 
 fun masterMaestro(transferCash: Int, totalMonthTransfer: Int): Int {
@@ -20,7 +24,7 @@ fun masterMaestro(transferCash: Int, totalMonthTransfer: Int): Int {
     return res
 }
 
-fun visaMir(transferCash: Int, totalMonthTransfer: Int): Int {
+fun visaMir(transferCash: Int): Int {
     val res: Int = if (transferCash * 0.0075 < 3500) 3500
         else (transferCash * 0.0075).toInt()
     return res
