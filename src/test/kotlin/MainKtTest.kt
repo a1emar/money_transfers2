@@ -153,7 +153,7 @@ class MainKtTest {
         val card = 2
         val cash = 120000
         val totalCash = 0
-        val expectedRes = 3500
+        val expectedRes = 35000 // in original 3500
 
         //act
         val result = fees(typeCard = card, transferCash = cash, totalMonthTransfer = totalCash)
